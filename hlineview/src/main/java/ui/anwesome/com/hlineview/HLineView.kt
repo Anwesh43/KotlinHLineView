@@ -3,6 +3,7 @@ package ui.anwesome.com.hlineview
 /**
  * Created by anweshmishra on 06/02/18.
  */
+import android.app.Activity
 import android.content.Context
 import android.graphics.*
 import android.view.*
@@ -137,6 +138,13 @@ class HLineView(ctx:Context):View(ctx) {
             container?.startUpdating {
                 animator.start()
             }
+        }
+    }
+    companion object {
+        fun create(activity:Activity):HLineView {
+            val view = HLineView(activity)
+            activity.setContentView(view)
+            return view
         }
     }
 }
