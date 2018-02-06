@@ -75,4 +75,15 @@ class HLineView(ctx:Context):View(ctx) {
             }
         }
     }
+    data class HLineContainer(var w:Float,var h:Float,var hlineJoint:HLineJoint = HLineJoint(w,h)) {
+        fun draw(canvas:Canvas,paint:Paint) {
+            hlineJoint.draw(canvas,paint)
+        }
+        fun update(stopcb:(Float)->Unit) {
+            hlineJoint.update(stopcb)
+        }
+        fun startUpdating(startcb:()->Unit) {
+            hlineJoint.startUpdating(startcb)
+        }
+    }
 }
