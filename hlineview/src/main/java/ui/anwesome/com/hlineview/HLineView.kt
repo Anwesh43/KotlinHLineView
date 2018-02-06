@@ -53,7 +53,7 @@ class HLineView(ctx:Context):View(ctx) {
             state.startUpdating(startcb)
         }
     }
-    data class HLineState(var j:Int = 0,var jDir:Int = 0,var dir:Float = 0f,var prevScale:Float = 0f) {
+    data class HLineState(var j:Int = 0,var jDir:Int = 1,var dir:Float = 0f,var prevScale:Float = 0f) {
         val scales:Array<Float> = arrayOf(0f,0f,0f)
         fun update(stopcb:(Float)->Unit) {
             scales[j] += dir*0.1f
