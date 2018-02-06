@@ -111,4 +111,31 @@ class HLineView(ctx:Context):View(ctx) {
             }
         }
     }
+    data class HLineRenderer(var view:HLineView,var time:Int = 0) {
+        val animator = HLineAnimator(view)
+        var container:HLineContainer?=null
+        fun render(canvas:Canvas,paint:Paint) {
+            if(time == 0) {
+                val w = canvas.width.toFloat()
+                val h = canvas.height.toFloat()
+                container = HLineContainer(w,h)
+                paint.color = Color.parseColor("#f44336")
+                paint.strokeWidth = Math.min(w,h)/35
+                paint.strokeCap = Paint.Cap.ROUND
+            }
+            canvas.drawColor(Color.parseColor("#212121"))
+            container?.draw(canvas,paint)
+            time++
+            animator.animate {
+                container?.update {
+                    animator.stop()
+                }
+            }
+        }
+        fun handleTap() {
+            container?.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
