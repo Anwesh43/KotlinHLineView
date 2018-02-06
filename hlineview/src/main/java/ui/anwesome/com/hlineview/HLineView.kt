@@ -27,20 +27,20 @@ class HLineView(ctx:Context):View(ctx) {
             val scales = state.scales
             val j = state.j
             canvas.save()
-            canvas.translate(w/2-w/8,h/2)
+            canvas.translate(-w/8,0f)
             canvas.rotate(-90f*scales[0])
             canvas.drawLine(0f,0f,w/8,0f,paint)
             canvas.restore()
             if (j >= 1) {
                 canvas.save()
-                canvas.translate(w / 2 - w / 8, h / 2 - w / 4)
+                canvas.translate(0 - w / 8, 0 - w / 4)
                 canvas.rotate(180f*(1-scales[1]))
                 canvas.drawLine(0f, 0f, 0f, -w / 8, paint)
                 canvas.restore()
             }
             if(j >= 2) {
                 canvas.save()
-                canvas.translate(w / 2 - w / 8, h / 2)
+                canvas.translate(0 - w / 8, 0f)
                 canvas.rotate(90f*scales[2])
                 canvas.drawLine(0f, 0f, 0f, -w / 8, paint)
                 canvas.restore()
@@ -59,7 +59,6 @@ class HLineView(ctx:Context):View(ctx) {
             scales[j] += dir*0.1f
             if(Math.abs(scales[j]-prevScale) > 1) {
                 scales[j] = prevScale + dir
-                dir = 0f
                 j += jDir
                 if(j == scales.size || j == -1) {
                     jDir *= -1
@@ -79,7 +78,15 @@ class HLineView(ctx:Context):View(ctx) {
     }
     data class HLineContainer(var w:Float,var h:Float,var hlineJoint:HLineJoint = HLineJoint(w,h)) {
         fun draw(canvas:Canvas,paint:Paint) {
-            hlineJoint.draw(canvas,paint)
+            canvas.save()
+            canvas.translate(w/2,h/2)
+            for(i in 0..1) {
+                canvas.save()
+                canvas.scale(1f-2*i,1f)
+                hlineJoint.draw(canvas, paint)
+                canvas.restore()
+            }
+            canvas.restore()
         }
         fun update(stopcb:(Float)->Unit) {
             hlineJoint.update(stopcb)
