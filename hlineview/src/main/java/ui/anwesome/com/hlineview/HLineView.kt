@@ -20,28 +20,35 @@ class HLineView(ctx:Context):View(ctx) {
         return true
     }
     data class HLineJoint(var w:Float,var h:Float) {
+        val state = HLineState()
         fun draw(canvas:Canvas,paint:Paint) {
+            val scales = state.scales
+            val j = state.j
             canvas.save()
             canvas.translate(w/2-w/8,h/2)
-            canvas.rotate(-90f)
+            canvas.rotate(-90f*scales[0])
             canvas.drawLine(0f,0f,w/8,0f,paint)
             canvas.restore()
-            canvas.save()
-            canvas.translate(w/2-w/8,h/2-w/4)
-            canvas.rotate(180f)
-            canvas.drawLine(0f,0f,0f,-w/8,paint)
-            canvas.restore()
-            canvas.save()
-            canvas.translate(w/2-w/8,h/2)
-            canvas.rotate(90f)
-            canvas.drawLine(0f,0f,0f,-w/8,paint)
-            canvas.restore()
+            if (j >= 1) {
+                canvas.save()
+                canvas.translate(w / 2 - w / 8, h / 2 - w / 4)
+                canvas.rotate(180f*(1-scales[1]))
+                canvas.drawLine(0f, 0f, 0f, -w / 8, paint)
+                canvas.restore()
+            }
+            if(j >= 2) {
+                canvas.save()
+                canvas.translate(w / 2 - w / 8, h / 2)
+                canvas.rotate(90f*scales[2])
+                canvas.drawLine(0f, 0f, 0f, -w / 8, paint)
+                canvas.restore()
+            }
         }
         fun update(stopcb:(Float)->Unit) {
-
+            state.update(stopcb)
         }
         fun startUpdating(startcb:()->Unit) {
-
+            state.startUpdating(startcb)
         }
     }
     data class HLineState(var j:Int = 0,var jDir:Int = 0,var dir:Float = 0f,var prevScale:Float = 0f) {
