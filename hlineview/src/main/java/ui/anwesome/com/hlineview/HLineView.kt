@@ -33,7 +33,7 @@ class HLineView(ctx:Context):View(ctx) {
             canvas.restore()
             if (j >= 1) {
                 canvas.save()
-                canvas.translate(0 - w / 8, 0 - w / 4)
+                canvas.translate(0 - w / 8, 0 - w / 8)
                 canvas.rotate(180f*(1-scales[1]))
                 canvas.drawLine(0f, 0f, 0f, -w / 8, paint)
                 canvas.restore()
@@ -80,9 +80,9 @@ class HLineView(ctx:Context):View(ctx) {
         fun draw(canvas:Canvas,paint:Paint) {
             canvas.save()
             canvas.translate(w/2,h/2)
-            for(i in 0..1) {
+            for(i in 0..3) {
                 canvas.save()
-                canvas.scale(1f-2*i,1f)
+                canvas.scale(1f-2*(i%2),1f-2*(i/2))
                 hlineJoint.draw(canvas, paint)
                 canvas.restore()
             }
